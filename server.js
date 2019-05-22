@@ -6,7 +6,7 @@ const mongodb = require('mongodb');
 const MongoClient = mongodb.MongoClient;
 const URI = process.env.MONGODB_URI || 'mongodb://localhost/database';
 const PORT = process.env.PORT || 5000;
-const DB_NAME = process.env.DB_NAME;
+const DB_NAME = process.env.DB_NAME || 'magictrick';
 
 app.use(bodyParser.urlencoded({ extended: false}));
 app.use(bodyParser.json());
@@ -31,7 +31,7 @@ app.post('/secret', (req, res) => {
                     res.send('Inserted into database');
                 }
             });
-            db.close();
+            client.close();
         }
     })
 });
@@ -57,10 +57,10 @@ app.get('/:param*', (req, res) => {
                         const card = result[result.length-1].card + '.png';
                         res.sendFile(path.join(__dirname) + '/cards/' + card);
                     } else {
-                        sendStatus(404);
+                        res.sendStatus(404);
                     }
 
-                    db.close();
+                    client.close();
                 });
             }
         }
