@@ -47,7 +47,7 @@ app.get('/:param*', (req, res) => {
             const collection = db.collection('names');
 
             if (name === 'deleteall') {
-                collection.remove({});
+                collection.deleteMany({});
                 res.send('Database reset');
             } else {
                 collection.find({name: name}).toArray((err, result) => {
